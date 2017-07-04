@@ -13,6 +13,9 @@ import java.net.Socket;
 import java.util.Vector;
 
 /**
+ * 接続毎生成されるスレッド
+ * クライアントからデータを受信し、
+ * 他のスレッドから受信した情報を送信する
  *
  * @author bakaj
  */
@@ -20,10 +23,6 @@ public class ServerThread extends Thread {
 
     static Vector threads;
     Socket conn;
-    /*int AX = 0;
-    int AY = -250;
-    int BX = 0;
-    int BY = -250;*/
     int AX = 200;
     int AY = 300;
     int BX = -100;
@@ -36,6 +35,12 @@ public class ServerThread extends Thread {
     char BHeading;
     char mode;
 
+    /**
+     * スレッドのコンストラクタ
+     * スレッドの塊に自分を追加する
+     *
+     * @param s
+     */
     public ServerThread(Socket s) {
         super();
         conn = s;
@@ -118,6 +123,12 @@ public class ServerThread extends Thread {
         }
     }
 
+    /**
+     * 自分も含めすべてのスレッドにデータを送信
+     *
+     * @param a
+     * @param xy
+     */
     public void talk(int a, char xy) {
         for (int i = 0; i < threads.size(); i++) {
             //スレッド情報を取得
