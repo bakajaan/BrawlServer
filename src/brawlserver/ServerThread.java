@@ -21,18 +21,53 @@ import java.util.Vector;
  */
 public class ServerThread extends Thread {
 
+    /**
+     * スレッドの塊
+     */
     static Vector threads;
+    /**
+     * 通信用ソケット
+     */
     Socket conn;
+    /**
+     * 自分X座標
+     */
     int AX = 200;
+    /**
+     * 自分Y座標
+     */
     int AY = 300;
+    /**
+     * 敵X座標
+     */
     int BX = -100;
+    /**
+     * 敵Y座標
+     */
     int BY = -100;
+    /**
+     * 自分の動きのタイプ
+     * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
+     */
     int AT = 0;
+    /**
+     * 敵の動きのタイプ
+     * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
+     */
     int BT = 0;
+    /**
+     * 自分の向いている向き
+     * 0:動いていない　1:右　2:左
+     */
     int AH = 0;
+    /**
+     * 敵の向いている向き
+     * 0:動いていない　1:右　2:左
+     */
     int BH = 0;
-    char AHeading;
-    char BHeading;
+    /**
+     * 自分のモード
+     */
     char mode;
 
     /**
@@ -124,10 +159,10 @@ public class ServerThread extends Thread {
     }
 
     /**
-     * 自分も含めすべてのスレッドにデータを送信
+     * 全てのスレッドのtalkoneメソッドにデータを送信
      *
-     * @param a
-     * @param xy
+     * @param a　数値
+     * @param xy　タイプ
      */
     public void talk(int a, char xy) {
         for (int i = 0; i < threads.size(); i++) {
@@ -140,6 +175,13 @@ public class ServerThread extends Thread {
         }
     }
 
+    /**
+     * スレッドから受信したデータを処理
+     *
+     * @param talker　スレッドの判別ID
+     * @param a　数値
+     * @param xy　タイプ
+     */
     public void talkone(ServerThread talker, int a, char xy) {
         PrintWriter out;
         try {
