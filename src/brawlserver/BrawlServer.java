@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package brawlserver;
-//test01
-//test03
+
 import static javax.swing.JFrame.*;
 
 import java.io.IOException;
@@ -16,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
+ * サーバークラス
+ * 接続を待ち、接続されるとスレッドを生成する
  *
  * @author bakaj
  */
@@ -23,6 +24,11 @@ public class BrawlServer {
 
     static int port = 7788;
 
+    /**
+     * メインメソッド
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         //フレームの作成
         JFrame mainF = new JFrame();
