@@ -21,6 +21,7 @@ import java.util.Vector;
  */
 public class ServerThread extends Thread {
 
+    //<editor-fold defaultstate="collapsed" desc="メンバ">
     /**
      * スレッドの塊
      */
@@ -69,6 +70,7 @@ public class ServerThread extends Thread {
      * 自分のモード
      */
     char mode;
+//</editor-fold>
 
     /**
      * スレッドのコンストラクタ
@@ -106,22 +108,22 @@ public class ServerThread extends Thread {
                     String a = in.readLine();
                     //先頭二文字によって受信内容を判断する。
                     switch (a.charAt(0)) {
-                        //モーションタイプの受信&精査&送信
+                        //モーションタイプの受信&送信
                         case 'T':
                             AT = Integer.parseInt(a.replace("T", ""));
                             talk(AT, 't');
                             break;
-                        //向いている方向の受信&精査&送信
+                        //向いている方向の受信&送信
                         case 'H':
                             AH = Integer.parseInt(a.replace("H", ""));
                             talk(AH, 'h');
                             break;
-                        //X座標の受信&精査&送信
+                        //X座標の受信&送信
                         case 'X':
                             AX = Integer.parseInt(a.replace("X", ""));
                             talk(AX, 'x');
                             break;
-                        //Y座標の受信&精査&送信
+                        //Y座標の受信&送信
                         case 'Y':
                             AY = Integer.parseInt(a.replace("Y", ""));
                             talk(AY, 'y');
