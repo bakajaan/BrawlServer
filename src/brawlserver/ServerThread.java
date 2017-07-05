@@ -70,6 +70,8 @@ public class ServerThread extends Thread {
      * 自分のモード
      */
     char mode;
+    BufferedReader in;
+    PrintWriter out;
 //</editor-fold>
 
     /**
@@ -93,52 +95,17 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-        BufferedReader in = null;
-        PrintWriter out = null;
         try {
-            System.err.println("*** Connected ***");
             //接続
+            System.err.println("*** Connected ***");
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             out = new PrintWriter(conn.getOutputStream());
             out.println(mode);
             out.flush();
             while (true) {
-                try {
-                    //受信内容の読み取り
-                    String a = in.readLine();
-                    //先頭二文字によって受信内容を判断する。
-                    switch (a.charAt(0)) {
-                        //モーションタイプの受信&送信
-                        case 'T':
-                            AT = Integer.parseInt(a.replace("T", ""));
-                            talk(AT, 't');
-                            break;
-                        //向いている方向の受信&送信
-                        case 'H':
-                            AH = Integer.parseInt(a.replace("H", ""));
-                            talk(AH, 'h');
-                            break;
-                        //X座標の受信&送信
-                        case 'X':
-                            AX = Integer.parseInt(a.replace("X", ""));
-                            talk(AX, 'x');
-                            break;
-                        //Y座標の受信&送信
-                        case 'Y':
-                            AY = Integer.parseInt(a.replace("Y", ""));
-                            talk(AY, 'y');
-                            break;
-                        //終了処理
-                        case 'C':
-                            in.close();
-                            out.close();
-                            conn.close();
-                            threads.remove(this);
-                            System.err.println("*** Connection closed ***");
-                            return;
-                    }
-                } catch (IOException | NumberFormatException e) {
-                    //例外を受信したらスレッドを閉じる
+                //受信内容の読み取り
+                String receiveT = in.readLine();
+                if (receiveT == "C") {
                     in.close();
                     out.close();
                     conn.close();
@@ -146,16 +113,32 @@ public class ServerThread extends Thread {
                     System.err.println("*** Connection closed ***");
                     return;
                 }
+                AT = Integer.parseInt(receiveT.substring(
+                        receiveT.indexOf("T") + 1, receiveT.indexOf("t")));
+                AH = Integer.parseInt(receiveT.substring(
+                        receiveT.indexOf("H") + 1, receiveT.indexOf("h")));
+                AX = Integer.parseInt(receiveT.substring(
+                        receiveT.indexOf("X") + 1, receiveT.indexOf("x")));
+                AY = Integer.parseInt(receiveT.substring(
+                        receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
+                String sendT = ""
+                        + "T" + AT + "t"
+                        + "H" + AH + "h"
+                        + "X" + AX + "x"
+                        + "Y" + AY + "y";
+                talk(sendT);
             }
-        } catch (IOException e) {
-            System.err.println(e);
+        } catch (IOException | NumberFormatException e) {
+            System.out.println(e);
+            //例外を受信したらスレッドを閉じる
             try {
-                //例外を受信したらスレッドを閉じる
                 in.close();
                 out.close();
                 conn.close();
                 threads.remove(this);
+                System.err.println("*** Connection closed ***");
             } catch (IOException ev) {
+                System.out.println(ev);
             }
         }
     }
@@ -163,16 +146,17 @@ public class ServerThread extends Thread {
     /**
      * 全てのスレッドのtalkoneメソッドにデータを送信
      *
+     * @param text
      * @param a　数値
      * @param xy　タイプ
      */
-    public void talk(int a, char xy) {
+    public void talk(String text) {
         for (int i = 0; i < threads.size(); i++) {
             //スレッド情報を取得
             ServerThread t = (ServerThread) threads.get(i);
             if (t.isAlive()) {
                 //全てのスレッドに情報を送信
-                t.talkone(this, a, xy);
+                t.talkone(this, text);
             }
         }
     }
@@ -181,49 +165,29 @@ public class ServerThread extends Thread {
      * スレッドから受信したデータを処理
      *
      * @param talker　スレッドの判別ID
+     * @param receiveT
      * @param a　数値
      * @param xy　タイプ
      */
-    public void talkone(ServerThread talker, int a, char xy) {
-        PrintWriter out;
-        try {
-            out = new PrintWriter(conn.getOutputStream());
-            if (talker == this) {
-                //自分から送られてきたメッセージだった場合そのまま送信
-                switch (xy) {
-                    case 't':
-                        out.println(BT);
-                        break;
-                    case 'h':
-                        out.println(BH);
-                        break;
-                    case 'x':
-                        out.println(BX);
-                        break;
-                    case 'y':
-                        out.println(BY);
-                        break;
-                }
-                out.flush();
-            } else {
-                //自分以外から送られてきたメッセージの場合代入
-                switch (xy) {
-                    case 't':
-                        BT = a;
-                        break;
-                    case 'h':
-                        BH = a;
-                        break;
-                    case 'x':
-                        BX = a;
-                        break;
-                    case 'y':
-                        BY = a;
-                        break;
-                }
-            }
-        } catch (IOException e) {
-            System.err.println(e);
+    public void talkone(ServerThread talker, String receiveT) {
+        if (talker == this) {
+            String sendT = ""
+                    + "T" + BT + "t"
+                    + "H" + BH + "h"
+                    + "X" + BX + "x"
+                    + "Y" + BY + "y";
+            out.println(sendT);
+            out.flush();
+        } else {
+            //自分以外から送られてきたメッセージの場合代入
+            BT = Integer.parseInt(receiveT.substring(
+                    receiveT.indexOf("T") + 1, receiveT.indexOf("t")));
+            BH = Integer.parseInt(receiveT.substring(
+                    receiveT.indexOf("H") + 1, receiveT.indexOf("h")));
+            BX = Integer.parseInt(receiveT.substring(
+                    receiveT.indexOf("X") + 1, receiveT.indexOf("x")));
+            BY = Integer.parseInt(receiveT.substring(
+                    receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
         }
     }
 }
