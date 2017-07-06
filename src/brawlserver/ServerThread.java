@@ -92,7 +92,7 @@ public class ServerThread extends Thread {
     public void run() {
         try {
             //接続
-            System.err.println("*** Connected ***");
+            System.out.println("*** Connected ***");
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             out = new PrintWriter(conn.getOutputStream());
             out.println(mode);
@@ -105,7 +105,7 @@ public class ServerThread extends Thread {
                     out.close();
                     conn.close();
                     threads.remove(this);
-                    System.err.println("*** Connection closed ***");
+                    System.out.println("*** Connection closed ***");
                     return;
                 }
                 AT = Integer.parseInt(receiveT.substring(
@@ -142,8 +142,6 @@ public class ServerThread extends Thread {
      * 全てのスレッドのtalkoneメソッドにデータを送信
      *
      * @param text
-     * @param a　数値
-     * @param xy　タイプ
      */
     public void talk(String text) {
         for (int i = 0; i < threads.size(); i++) {
@@ -161,8 +159,6 @@ public class ServerThread extends Thread {
      *
      * @param talker　スレッドの判別ID
      * @param receiveT
-     * @param a　数値
-     * @param xy　タイプ
      */
     public void talkone(ServerThread talker, String receiveT) {
         if (talker == this) {
