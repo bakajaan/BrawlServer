@@ -17,6 +17,9 @@ import javax.swing.JLabel;
  */
 public class BrawlServer {
 
+    /**
+     * 解放するポート番号
+     */
     static int port = 7788;
 
     /**
