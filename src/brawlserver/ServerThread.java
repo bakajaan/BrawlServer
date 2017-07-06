@@ -65,7 +65,13 @@ public class ServerThread extends Thread {
      * 自分のモード
      */
     char mode;
+    /**
+     * データ受信用リーダー
+     */
     BufferedReader in;
+    /**
+     * データ送信用ライター
+     */
     PrintWriter out;
 //</editor-fold>
 
