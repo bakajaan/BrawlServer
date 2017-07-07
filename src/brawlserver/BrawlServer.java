@@ -34,8 +34,7 @@ public class BrawlServer {
         mainF.setVisible(true);
         mainF.setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainF.setLayout(null);
-        ServerPanel serverP=new ServerPanel();
-        mainF.add(serverP);
+        PanelThread serverP=new PanelThread(mainF);
         try {
             //サーバー準備
             ServerSocket server = new ServerSocket(port);
