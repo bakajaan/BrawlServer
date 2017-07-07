@@ -1,6 +1,7 @@
 package brawlserver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,12 +41,19 @@ public class PanelThread extends Thread {
     public void addThread(Thread t) {
         threadList.add(t);
         threadCountL.setText("" + threadList.size());
+        this.start();
     }
 
     @Override
     public void run() {
-        while(!threadList.isEmpty()){
-            
+        while (threadList.size() > 0) {
+            for (Iterator ite = threadList.iterator(); ite.hasNext();) {
+                Thread t = (Thread) ite.next();
+                if (!t.isAlive()) {
+                    ite.remove();
+                    threadCountL.setText("" + threadList.size());
+                }
+            }
         }
     }
 }
