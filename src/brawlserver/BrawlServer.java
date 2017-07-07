@@ -30,12 +30,12 @@ public class BrawlServer {
     public static void main(String[] args) {
         //フレームの作成
         JFrame mainF = new JFrame();
-        mainF.setBounds(0, 0, 100, 100);
+        mainF.setBounds(0, 0, 400, 400);
         mainF.setVisible(true);
         mainF.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //ラベルの追加
-        JLabel label1 = new JLabel("a");
-        mainF.add(label1);
+        mainF.setLayout(null);
+        ServerPanel serverP=new ServerPanel();
+        mainF.add(serverP);
         try {
             //サーバー準備
             ServerSocket server = new ServerSocket(port);
@@ -47,9 +47,9 @@ public class BrawlServer {
                     conn = server.accept();
                     //スレッド生成
                     ServerThread t = new ServerThread(conn);
-                    //label1.setText();
                     //スレッド実行
                     t.start();
+                    serverP.addThread(t);
                 } catch (IOException e) {
                     System.err.println(e);
                 }
