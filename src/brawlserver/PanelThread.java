@@ -1,5 +1,7 @@
 package brawlserver;
 
+import static java.lang.Thread.State.NEW;
+import static java.lang.Thread.State.TERMINATED;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,12 +38,12 @@ public class PanelThread extends Thread {
         threadCountL = new JLabel("0");
         threadCountL.setBounds(0, 0, 400, 16);
         serverP.add(threadCountL);
+        this.start();
     }
 
     public void addThread(Thread t) {
         threadList.add(t);
         threadCountL.setText("" + threadList.size());
-        this.start();
     }
 
     @Override
