@@ -106,29 +106,35 @@ public class ServerThread extends Thread {
             while (true) {
                 //受信内容の読み取り
                 String receiveT = in.readLine();
-                if (receiveT == "C") {
+                if (receiveT.charAt(0)== 'C') {
                     in.close();
                     out.close();
                     conn.close();
                     threads.remove(this);
                     System.out.println("*** Connection closed ***");
-                    return;
+                    break;
+                } else {
+                    AT = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("T") + 1, receiveT.indexOf("t")));
+                    AH = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("H") + 1, receiveT.indexOf("h")));
+                    AX = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("X") + 1, receiveT.indexOf("x")));
+                    AY = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
+                    String sendT = ""
+                            + "T" + AT + "t"
+                            + "H" + AH + "h"
+                            + "X" + AX + "x"
+                            + "Y" + AY + "y";
+                    talk(sendT);
                 }
-                AT = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("T") + 1, receiveT.indexOf("t")));
-                AH = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("H") + 1, receiveT.indexOf("h")));
-                AX = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("X") + 1, receiveT.indexOf("x")));
-                AY = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
-                String sendT = ""
-                        + "T" + AT + "t"
-                        + "H" + AH + "h"
-                        + "X" + AX + "x"
-                        + "Y" + AY + "y";
-                talk(sendT);
             }
+            in.close();
+            out.close();
+            conn.close();
+            threads.remove(this);
+            System.err.println("*** Connection closed ***");
         } catch (IOException | NumberFormatException e) {
             System.out.println(e);
             //例外を受信したらスレッドを閉じる
