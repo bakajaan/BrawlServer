@@ -1,7 +1,5 @@
 package brawlserver;
 
-import static java.lang.Thread.State.NEW;
-import static java.lang.Thread.State.TERMINATED;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +24,10 @@ public class PanelThread extends Thread {
      */
     JLabel threadCountL;
     /**
+     * サーバー情報を表示する用のラベル
+     */
+    JLabel info01;
+    /**
      * 表示用パネル
      */
     JPanel serverP;
@@ -38,22 +40,29 @@ public class PanelThread extends Thread {
         threadCountL = new JLabel("0");
         threadCountL.setBounds(0, 0, 400, 16);
         serverP.add(threadCountL);
+        info01 = new JLabel("null");
+        info01.setBounds(0, 16, 400, 16);
+        serverP.add(info01);
         this.start();
     }
 
-    public void addThread(Thread t) {
+    public void addThread(ServerThread t) {
         threadList.add(t);
         threadCountL.setText("" + threadList.size());
     }
 
     @Override
     public void run() {
-        while (threadList.size() > 0) {
-            for (Iterator ite = threadList.iterator(); ite.hasNext();) {
-                Thread t = (Thread) ite.next();
-                if (!t.isAlive()) {
-                    ite.remove();
-                    threadCountL.setText("" + threadList.size());
+        while (true) {
+            if (threadList.size() > 0) {
+                for (Iterator ite = threadList.iterator(); ite.hasNext();) {
+                    Thread t = (Thread) ite.next();
+                    if (!t.isAlive()) {
+                        ite.remove();
+                        threadCountL.setText("" + threadList.size());
+                    } else {
+                        info01.setText("" + ((ServerThread) ite.next()).AX);
+                    }
                 }
             }
         }

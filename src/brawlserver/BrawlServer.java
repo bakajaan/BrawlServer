@@ -5,9 +5,7 @@ import static javax.swing.JFrame.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  * サーバークラス
@@ -34,7 +32,7 @@ public class BrawlServer {
         mainF.setVisible(true);
         mainF.setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainF.setLayout(null);
-        PanelThread serverP=new PanelThread(mainF);
+        PanelThread panelT = new PanelThread(mainF);
         try {
             //サーバー準備
             ServerSocket server = new ServerSocket(port);
@@ -48,7 +46,7 @@ public class BrawlServer {
                     ServerThread t = new ServerThread(conn);
                     //スレッド実行
                     t.start();
-                    serverP.addThread(t);
+                    panelT.addThread(t);
                 } catch (IOException e) {
                     System.err.println(e);
                 }
