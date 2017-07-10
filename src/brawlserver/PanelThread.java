@@ -56,14 +56,19 @@ public class PanelThread extends Thread {
         while (true) {
             if (threadList.size() > 0) {
                 for (Iterator ite = threadList.iterator(); ite.hasNext();) {
-                    Thread t = (Thread) ite.next();
+                    ServerThread t = (ServerThread) ite.next();
                     if (!t.isAlive()) {
                         ite.remove();
                         threadCountL.setText("" + threadList.size());
                     } else {
-                        info01.setText("" + ((ServerThread) ite.next()).AX);
+                        info01.setText("" + t.AX);
                     }
                 }
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                System.err.println(e);
             }
         }
     }
