@@ -36,11 +36,11 @@ public class ServerThread extends Thread {
     /**
      * 敵X座標
      */
-    int BX = -100;
+    int BX = 200;
     /**
      * 敵Y座標
      */
-    int BY = -100;
+    int BY = 300;
     /**
      * 自分の動きのタイプ
      * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
@@ -55,12 +55,12 @@ public class ServerThread extends Thread {
      * 自分の向いている向き
      * 0:動いていない　1:右　2:左
      */
-    int AH = 0;
+    int AH = 1;
     /**
      * 敵の向いている向き
      * 0:動いていない　1:右　2:左
      */
-    int BH = 0;
+    int BH = 2;
     /**
      * 自分のモード
      */
