@@ -43,7 +43,6 @@ public class PanelThread extends Thread {
         info01 = new JLabel("null");
         info01.setBounds(0, 16, 400, 16);
         serverP.add(info01);
-        this.start();
     }
 
     public void addThread(ServerThread t) {

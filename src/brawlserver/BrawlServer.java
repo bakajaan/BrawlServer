@@ -33,6 +33,7 @@ public class BrawlServer {
         mainF.setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainF.setLayout(null);
         PanelThread panelT = new PanelThread(mainF);
+        panelT.start();
         try {
             //サーバー準備
             ServerSocket server = new ServerSocket(port);
