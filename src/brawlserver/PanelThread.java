@@ -53,6 +53,7 @@ public class PanelThread extends Thread {
     @Override
     public void run() {
         while (true) {
+            info01.setText("");
             if (threadList.size() > 0) {
                 for (Iterator ite = threadList.iterator(); ite.hasNext();) {
                     ServerThread t = (ServerThread) ite.next();
@@ -60,12 +61,12 @@ public class PanelThread extends Thread {
                         ite.remove();
                         threadCountL.setText("" + threadList.size());
                     } else {
-                        info01.setText("" + t.AX);
+                        info01.setText(info01.getText() + t.AX + ":");
                     }
                 }
             }
             try {
-                Thread.sleep(1);
+                Thread.sleep(12);
             } catch (InterruptedException e) {
                 System.err.println(e);
             }
