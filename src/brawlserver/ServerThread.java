@@ -24,55 +24,55 @@ public class ServerThread extends Thread {
     /**
      * 通信用ソケット
      */
-    Socket conn;
+    private final Socket conn;
     /**
      * 自分X座標
      */
-    int AX = 200;
+    private int AX = 200;
     /**
      * 自分Y座標
      */
-    int AY = 300;
+    private int AY = 300;
     /**
      * 敵X座標
      */
-    int BX = -100;
+    private int BX = 200;
     /**
      * 敵Y座標
      */
-    int BY = -100;
+    private int BY = 300;
     /**
      * 自分の動きのタイプ
      * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
      */
-    int AT = 0;
+    private int AT = 0;
     /**
      * 敵の動きのタイプ
      * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
      */
-    int BT = 0;
+    private int BT = 0;
     /**
      * 自分の向いている向き
      * 0:動いていない　1:右　2:左
      */
-    int AH = 0;
+    private int AH = 1;
     /**
      * 敵の向いている向き
      * 0:動いていない　1:右　2:左
      */
-    int BH = 0;
+    private int BH = 2;
     /**
      * 自分のモード
      */
-    char mode;
+    private final char mode;
     /**
      * データ受信用リーダー
      */
-    BufferedReader in;
+    private BufferedReader in;
     /**
      * データ送信用ライター
      */
-    PrintWriter out;
+    private PrintWriter out;
 //</editor-fold>
 
     /**
@@ -81,6 +81,7 @@ public class ServerThread extends Thread {
      *
      * @param s
      */
+    @SuppressWarnings("unchecked")
     public ServerThread(Socket s) {
         super();
         conn = s;
@@ -106,29 +107,35 @@ public class ServerThread extends Thread {
             while (true) {
                 //受信内容の読み取り
                 String receiveT = in.readLine();
-                if (receiveT == "C") {
+                if (receiveT.charAt(0) == 'C') {
                     in.close();
                     out.close();
                     conn.close();
                     threads.remove(this);
                     System.out.println("*** Connection closed ***");
-                    return;
+                    break;
+                } else {
+                    AT = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("T") + 1, receiveT.indexOf("t")));
+                    AH = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("H") + 1, receiveT.indexOf("h")));
+                    AX = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("X") + 1, receiveT.indexOf("x")));
+                    AY = Integer.parseInt(receiveT.substring(
+                            receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
+                    String sendT = ""
+                            + "T" + AT + "t"
+                            + "H" + AH + "h"
+                            + "X" + AX + "x"
+                            + "Y" + AY + "y";
+                    talk(sendT);
                 }
-                AT = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("T") + 1, receiveT.indexOf("t")));
-                AH = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("H") + 1, receiveT.indexOf("h")));
-                AX = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("X") + 1, receiveT.indexOf("x")));
-                AY = Integer.parseInt(receiveT.substring(
-                        receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
-                String sendT = ""
-                        + "T" + AT + "t"
-                        + "H" + AH + "h"
-                        + "X" + AX + "x"
-                        + "Y" + AY + "y";
-                talk(sendT);
             }
+            in.close();
+            out.close();
+            conn.close();
+            threads.remove(this);
+            System.err.println("*** Connection closed ***");
         } catch (IOException | NumberFormatException e) {
             System.out.println(e);
             //例外を受信したらスレッドを閉じる
@@ -186,5 +193,61 @@ public class ServerThread extends Thread {
             BY = Integer.parseInt(receiveT.substring(
                     receiveT.indexOf("Y") + 1, receiveT.indexOf("y")));
         }
+    }
+
+    /**
+     * @return the AX
+     */
+    public int getAX() {
+        return AX;
+    }
+
+    /**
+     * @return the AY
+     */
+    public int getAY() {
+        return AY;
+    }
+
+    /**
+     * @return the BX
+     */
+    public int getBX() {
+        return BX;
+    }
+
+    /**
+     * @return the BY
+     */
+    public int getBY() {
+        return BY;
+    }
+
+    /**
+     * @return the AT
+     */
+    public int getAT() {
+        return AT;
+    }
+
+    /**
+     * @return the BT
+     */
+    public int getBT() {
+        return BT;
+    }
+
+    /**
+     * @return the AH
+     */
+    public int getAH() {
+        return AH;
+    }
+
+    /**
+     * @return the BH
+     */
+    public int getBH() {
+        return BH;
     }
 }
