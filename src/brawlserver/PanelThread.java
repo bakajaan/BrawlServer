@@ -18,22 +18,18 @@ public class PanelThread extends Thread {
     /**
      * クライアント分のスレッドを格納するリスト
      */
-    List threadList = new ArrayList();
+    private final List threadList = new ArrayList();
     /**
      * 接続数を表示する用のラベル
      */
-    JLabel threadCountL;
+    private final JLabel threadCountL;
     /**
      * サーバー情報を表示する用のラベル
      */
-    JLabel info01;
-    /**
-     * 表示用パネル
-     */
-    JPanel serverP;
+    private final JLabel info01;
 
     public PanelThread(JFrame mainF) {
-        serverP = new JPanel();
+        JPanel serverP = new JPanel();
         serverP.setLayout(null);
         serverP.setBounds(0, 0, 400, 400);
         mainF.add(serverP);
@@ -45,6 +41,7 @@ public class PanelThread extends Thread {
         serverP.add(info01);
     }
 
+    @SuppressWarnings("unchecked")
     public void addThread(ServerThread t) {
         threadList.add(t);
         threadCountL.setText("" + threadList.size());
@@ -61,7 +58,7 @@ public class PanelThread extends Thread {
                         ite.remove();
                         threadCountL.setText("" + threadList.size());
                     } else {
-                        info01.setText(info01.getText() + t.AX + ":");
+                        info01.setText(info01.getText() + t.getAX() + ":");
                     }
                 }
             }

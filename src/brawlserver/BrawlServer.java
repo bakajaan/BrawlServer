@@ -16,16 +16,16 @@ import javax.swing.JFrame;
 public class BrawlServer {
 
     /**
-     * 解放するポート番号
-     */
-    static int port = 7788;
-
-    /**
      * メインメソッド
      *
      * @param args
      */
     public static void main(String[] args) {
+
+        /**
+         * 解放するポート番号
+         */
+        int port = 7788;
         //フレームの作成
         JFrame mainF = new JFrame();
         mainF.setBounds(0, 0, 400, 400);
