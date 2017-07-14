@@ -58,7 +58,7 @@ public class PanelThread extends Thread {
                         ite.remove();
                         threadCountL.setText("" + threadList.size());
                     } else {
-                        info01.setText(info01.getText() + t.getAX() + ":");
+                        info01.setText(info01.getText() + t.getAX() + "," + t.getAY() + ":");
                     }
                 }
             }

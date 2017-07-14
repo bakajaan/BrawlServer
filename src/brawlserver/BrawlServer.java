@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  * @author bakaj
  */
 public class BrawlServer {
-
+    
     /**
      * メインメソッド
      *
