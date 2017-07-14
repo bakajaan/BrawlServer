@@ -50,7 +50,7 @@ public class ServerThread extends Thread {
      * 敵の動きのタイプ
      * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
      */
-    private int BT = 6;
+    private int BT = 15;
     /**
      * 自分の向いている向き
      * 0:動いていない　1:右　2:左
