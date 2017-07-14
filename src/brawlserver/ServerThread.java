@@ -28,19 +28,19 @@ public class ServerThread extends Thread {
     /**
      * 自分X座標
      */
-    private int AX = 200;
+    private int AX = 950;
     /**
      * 自分Y座標
      */
-    private int AY = 300;
+    private int AY = 380;
     /**
      * 敵X座標
      */
-    private int BX = 400;
+    private int BX = 1350;
     /**
      * 敵Y座標
      */
-    private int BY = 300;
+    private int BY = 380;
     /**
      * 自分の動きのタイプ
      * 0-2:歩き　3:攻撃　4:ジャンプ　5:死亡
