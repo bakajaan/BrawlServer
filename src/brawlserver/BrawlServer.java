@@ -26,14 +26,7 @@ public class BrawlServer {
          * 解放するポート番号
          */
         int port = 7788;
-        //フレームの作成
-        JFrame mainF = new JFrame();
-        mainF.setBounds(0, 0, 400, 400);
-        mainF.setVisible(true);
-        mainF.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        mainF.setLayout(null);
-        PanelThread panelT = new PanelThread(mainF);
-        panelT.start();
+        
         try {
             //サーバー準備
             ServerSocket server = new ServerSocket(port);
@@ -47,7 +40,6 @@ public class BrawlServer {
                     ServerThread t = new ServerThread(conn);
                     //スレッド実行
                     t.start();
-                    panelT.addThread(t);
                 } catch (IOException e) {
                     System.err.println(e);
                 }
