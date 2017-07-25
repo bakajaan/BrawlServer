@@ -5,9 +5,7 @@ import static javax.swing.JFrame.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  * サーバークラス
@@ -16,23 +14,19 @@ import javax.swing.JLabel;
  * @author bakaj
  */
 public class BrawlServer {
-
-    static int port = 7788;
-
+    
     /**
      * メインメソッド
      *
      * @param args
      */
     public static void main(String[] args) {
-        //フレームの作成
-        JFrame mainF = new JFrame();
-        mainF.setBounds(0, 0, 100, 100);
-        mainF.setVisible(true);
-        mainF.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //ラベルの追加
-        JLabel label1 = new JLabel("a");
-        mainF.add(label1);
+
+        /**
+         * 解放するポート番号
+         */
+        int port = 7788;
+        
         try {
             //サーバー準備
             ServerSocket server = new ServerSocket(port);
@@ -44,7 +38,6 @@ public class BrawlServer {
                     conn = server.accept();
                     //スレッド生成
                     ServerThread t = new ServerThread(conn);
-                    //label1.setText();
                     //スレッド実行
                     t.start();
                 } catch (IOException e) {
